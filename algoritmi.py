@@ -3,6 +3,7 @@ import re
 from cifrario import Cifrario
 from cesare import Cesare
 from permuta import Permuta
+from feistel import Feistel
 
 def encipher(file, cifrario):
     new_lines = []
@@ -73,3 +74,13 @@ def permuta_decipher(file, cifrario):
             deciphered_lines.append(cifrario.encipher(line, True))
         
     return ''.join(deciphered_lines)
+
+def feistel_encipher(file, feistel, times, keys):
+    with open(file, "rb") as f:
+        header = f.read(54)
+        picture = f.read()
+    
+    for i in range(times):
+        picture = feistel.encipher(picture, i + 1, keys[i])
+    
+    return header + picture
