@@ -6,6 +6,7 @@ from feistel import FeistelFunctions
 import sys
 import re
 import algoritmi
+import inspect
 
 while True:
     cifra = False
@@ -42,7 +43,7 @@ while True:
     elif scelta == '4':
         break
     elif scelta != '2':
-        print("Devi inserire un numero tra 1, 2 e 3")
+        print("Devi inserire un numero tra 1, 2, 3 e 4")
         continue
     
     print("Inserire il file di input:")
@@ -65,9 +66,9 @@ while True:
         print("Il file indicato non esiste! Riprovare...")
         continue
 
-    print("Operazione in corso...")
-
     if not feistel:
+        print("Operazione in corso...")
+
         if cifra:
             if cesare:
                 cifrario = Cifrario(Cesare())
@@ -88,13 +89,37 @@ while True:
         with open(file_output, "w") as f:
             f.write(text)
     else:
-        times = 10
+        print("Scrivere il file da cui prendere le chiavi:")
+        file_keys = input()
+        keys = []
+
+        try:
+            with open(file_keys, "r") as f:
+                for line in f.readlines():
+                    keys.append(int(line))
+        except IOError:
+            print("Il file indicato non esiste! Riprovare...")
+            continue
+
+        print("Scegli la funzione con cui cifrare:")
+        functions = inspect.getmembers(FeistelFunctions, predicate=inspect.isfunction)
+        i = 1
+
+        for f in functions:
+            print(str(i) + ") " + f[0])
+            i += 1
+        
+        n_function = input()
+
+        print("Operazione in corso...")
+
         if cifra:
-            feistel = Feistel()
-            picture = algoritmi.feistel_encipher(file_input, feistel, times, [i for i in range(1, times + 1)])
+            feistel = Feistel(False, functions[int(n_function) - 1][1])
+            picture = algoritmi.feistel_encipher(file_input, feistel, keys)
         else:
-            feistel = Feistel(True)
-            picture = algoritmi.feistel_encipher(file_input, feistel, times, [i for i in range(times, 0, -1)])
+            feistel = Feistel(True, functions[int(n_function) - 1][1])
+            keys.reverse()
+            picture = algoritmi.feistel_encipher(file_input, feistel, keys)
 
         with open(file_output, "wb") as f:
             f.write(picture)

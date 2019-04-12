@@ -5,20 +5,20 @@ def xor(bs1, bs2):
     return bytearray(list_bytes)
 
 class Feistel:
-    def __init__(self, decipher=False, function=FeistelFunctions.exp):
+    def __init__(self, decipher=False, function=FeistelFunctions.exp3):
         self.function = function
         self.decipher = decipher
     
-    def encipher(self, picture, iter, key):
+    def encipher(self, picture, key):
         half = len(picture) // 2
         left = picture[:half]
         right = picture[half:]
 
         if not self.decipher:
             new_left = right
-            new_right = xor(left, self.function(right, iter, key))
+            new_right = xor(left, self.function(right, key))
         else:
-            new_left = xor(right, self.function(left, iter, key))
+            new_left = xor(right, self.function(left, key))
             new_right = left
 
         enciphered = new_left + new_right

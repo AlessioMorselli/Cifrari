@@ -75,12 +75,12 @@ def permuta_decipher(file, cifrario):
         
     return ''.join(deciphered_lines)
 
-def feistel_encipher(file, feistel, times, keys):
+def feistel_encipher(file, feistel, keys):
     with open(file, "rb") as f:
         header = f.read(54)
         picture = f.read()
     
-    for i in range(times):
-        picture = feistel.encipher(picture, i + 1, keys[i])
+    for k in keys:
+        picture = feistel.encipher(picture, k)
     
     return header + picture
