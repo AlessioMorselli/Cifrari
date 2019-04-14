@@ -1,6 +1,9 @@
 /cifrati
 /decifrati
 /__pycache__
+*/__pycache__
 skeletor.bmp
 thanos.bmp
-key*
+./key*
+feistel_des/dec.bmp
+feistel_des/enc.bmp
