@@ -100,7 +100,7 @@ while True:
             print("Il file indicato non esiste! Riprovare...")
             continue
 
-        print("Scegli la funzione con cui cifrare:")
+        print("\nScegli la funzione con cui cifrare:")
         functions = inspect.getmembers(FeistelFunctions, predicate=inspect.isfunction)
         i = 1
 
