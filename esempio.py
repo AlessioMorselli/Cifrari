@@ -7,6 +7,11 @@ import sys
 import re
 import algoritmi
 import inspect
+from tkinter import Tk, filedialog
+
+
+root = Tk()
+root.withdraw()
 
 while True:
     cifra = False
@@ -44,8 +49,8 @@ while True:
         print("Devi inserire un numero tra 1, 2, 3 e 4")
         continue
     
-    print("\nInserire il file di input:")
-    file_input = input()
+    print("\nScegliere il file di input:")
+    file_input = filedialog.askopenfilename(initialdir = "/home/alessio/Documenti/cifrari")
 
     try:
         f = open(file_input, "r")
@@ -54,8 +59,11 @@ while True:
         print("Il file indicato non esiste! Riprovare...")
         continue
 
-    print("\nInserire il file di output:")
+    print("\nScegliere la cartella di output:")
+    dir_output = filedialog.askdirectory(initialdir = "/home/alessio/Documenti/cifrari")
+    print("\nScrivere il nome del file di output:")
     file_output = input()
+    file_output = dir_output + "/" + file_output
 
     try:
         f = open(file_output, "w")
@@ -89,7 +97,7 @@ while True:
     else:
         print("\nScrivere il file da cui prendere le chiavi:")
         print("NOTA: se si usa la funzione 'des' assicurarsi che il file contenga esattamente 8 interi compresi tra 0 e 255")
-        file_keys = input()
+        file_keys = filedialog.askopenfilename(initialdir = "/home/alessio/Documenti/cifrari/keys")
         keys = []
 
         try:
