@@ -2,7 +2,7 @@ from feistel_functions import FeistelFunctions
 
 def xor(bs1, bs2):
     list_bytes = [b1 ^ b2 for b1, b2 in zip(bs1, bs2)]
-    return bytearray(list_bytes)
+    return bytes(list_bytes)
 
 class Feistel:
     def __init__(self, decipher=False, function=FeistelFunctions.exp3):

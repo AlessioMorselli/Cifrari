@@ -17,7 +17,6 @@ while True:
     print("   1) Cifrare")
     print("   2) Decifrare")
     print("   3) Esci")
-    print("")
     scelta = input()
 
     if scelta == '1':
@@ -28,12 +27,11 @@ while True:
         print("Devi inserire un numero tra 1, 2 e 3")
         continue
     
-    print("Quale metodo usare?")
+    print("\nQuale metodo usare?")
     print("   1) Cesare")
     print("   2) Permutazione")
     print("   3) Feistel")
     print("   4) Esci")
-    print("")
     scelta = input()
 
     if scelta == '1':
@@ -46,7 +44,7 @@ while True:
         print("Devi inserire un numero tra 1, 2, 3 e 4")
         continue
     
-    print("Inserire il file di input:")
+    print("\nInserire il file di input:")
     file_input = input()
 
     try:
@@ -56,7 +54,7 @@ while True:
         print("Il file indicato non esiste! Riprovare...")
         continue
 
-    print("Inserire il file di output:")
+    print("\nInserire il file di output:")
     file_output = input()
 
     try:
@@ -67,7 +65,7 @@ while True:
         continue
 
     if not feistel:
-        print("Operazione in corso...")
+        print("\nOperazione in corso...")
 
         if cifra:
             if cesare:
@@ -89,7 +87,8 @@ while True:
         with open(file_output, "w") as f:
             f.write(text)
     else:
-        print("Scrivere il file da cui prendere le chiavi:")
+        print("\nScrivere il file da cui prendere le chiavi:")
+        print("NOTA: se si usa la funzione 'des' assicurarsi che il file contenga esattamente 8 interi compresi tra 0 e 255")
         file_keys = input()
         keys = []
 
@@ -110,20 +109,28 @@ while True:
             i += 1
         
         n_function = input()
+        func = functions[int(n_function) - 1]
 
         print("Operazione in corso...")
 
+        if func[0] == 'des':
+            if len(keys) != 8:
+                print("Se si usa la funzione 'des' assicurarsi che il file contenga esattamente 8 interi compresi tra 0 e 255")
+                continue
+            keys = bytes(keys)
+            keys = algoritmi.des_create_keys(keys)
+
         if cifra:
-            feistel = Feistel(False, functions[int(n_function) - 1][1])
+            feistel = Feistel(function=func[1])
             picture = algoritmi.feistel_encipher(file_input, feistel, keys)
         else:
-            feistel = Feistel(True, functions[int(n_function) - 1][1])
+            feistel = Feistel(decipher=True, function=func[1])
             keys.reverse()
             picture = algoritmi.feistel_encipher(file_input, feistel, keys)
 
         with open(file_output, "wb") as f:
             f.write(picture)
 
-    print("Operazione terminata!")
+    print("\nOperazione terminata!\n")
 
-print("Arrivederci!")
+print("\nArrivederci!")

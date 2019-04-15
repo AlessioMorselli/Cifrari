@@ -1,5 +1,12 @@
 from bitarray import bitarray
 
+def create_keys(key):
+    keys = []
+    key_56 = permuted_choice_1(key)
+    for i in range(16):
+        rotated_key = rotate_key(key_56, i)
+        keys.append(permuted_choice_2(rotated_key))
+
 def subtable(i):
     list_x = [  "0000", "0001", "0010", "0011",
                 "0100", "0101", "0110", "0111",

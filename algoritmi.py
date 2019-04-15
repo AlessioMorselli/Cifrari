@@ -4,6 +4,7 @@ from cifrario import Cifrario
 from cesare import Cesare
 from permuta import Permuta
 from feistel import Feistel
+from des import permuted_choice_1, rotate_key, permuted_choice_2
 
 def encipher(file, cifrario):
     new_lines = []
@@ -75,12 +76,26 @@ def permuta_decipher(file, cifrario):
         
     return ''.join(deciphered_lines)
 
+def des_create_keys(key):
+    keys = []
+    key_56 = permuted_choice_1(key)
+    for i in range(16):
+        rotated_key = rotate_key(key_56, i)
+        keys.append(permuted_choice_2(rotated_key))
+    
+    return keys
+
 def feistel_encipher(file, feistel, keys):
     with open(file, "rb") as f:
         header = f.read(54)
         picture = f.read()
     
+    i = 1
+    tot = len(keys)
     for k in keys:
+        print("Iterazione " + str(i) + " su " + str(tot) + " in corso...")
         picture = feistel.encipher(picture, k)
+        print("Iterazione " + str(i) + " su " + str(tot) + " terminata!")
+        i += 1
     
     return header + picture
