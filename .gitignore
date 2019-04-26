@@ -6,3 +6,4 @@ skeletor.bmp
 thanos.bmp
 *.encoded.*
 *.decoded.*
+/massey-omura/*.bmp
